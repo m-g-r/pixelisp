@@ -10,15 +10,16 @@
   ())
 
 (defmethod hunchentoot:acceptor-log-access ((acceptor acceptor) &key return-code)
-  (cl-log:log-message :info
-                      "(~A~@[ ~A~]) ~A ~A~@[?~A~] => ~A~@[ (~A bytes)~]"
-                      (hunchentoot:remote-addr*)
-                      (hunchentoot:authorization)
-                      (hunchentoot:request-method*)
-                      (hunchentoot:script-name*)
-                      (hunchentoot:query-string*)
-                      return-code
-                      (hunchentoot:content-length*)))
+  (unless (string= (hunchentoot:script-name*) "/log") ;; don't print logging itself
+    (cl-log:log-message :info
+                        "(~A~@[ ~A~]) ~A ~A~@[?~A~] => ~A~@[ (~A bytes)~]"
+                        (hunchentoot:remote-addr*)
+                        (hunchentoot:authorization)
+                        (hunchentoot:request-method*)
+                        (hunchentoot:script-name*)
+                        (hunchentoot:query-string*)
+                        return-code
+                        (hunchentoot:content-length*))))
 
 (defmethod hunchentoot:acceptor-log-message ((acceptor acceptor) log-level format-string &rest format-arguments)
   (cl-log:log-message :error "~S ~?" log-level format-string format-arguments))

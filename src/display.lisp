@@ -16,7 +16,7 @@
 
 (in-package :display)
 
-(defparameter *leds-device* #-darwin "/dev/spidev0.0" #+darwin "/dev/null")
+(defparameter *leds-device* #+arm "/dev/spidev0.0" #-arm "/dev/null")
 
 (defparameter $SPI_IOC_WR_MAX_SPEED_HZ #x40046b04)
 
@@ -160,7 +160,7 @@
                                     :if-exists :append
                                     :element-type '(unsigned-byte 8)))
         (brightness (storage:config 'brightness)))
-    #-darwin
+    #+arm
     (ccl:rlet ((max-hz :unsigned-fullword))
       (setf (ccl:%get-unsigned-long max-hz) 2000000)
       (let ((errno (ccl::int-errno-call (#_ioctl (ccl:stream-device output :output)

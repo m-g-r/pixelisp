@@ -6,7 +6,7 @@
 
 (in-package :server)
 
-(defparameter *default-http-port* #+darwin 8899 #-darwin 80)
+(defparameter *default-http-port* #-(or darwin x86-64) 80 #+darwin 8899 #+x86-64 8080)
 
 (defun determine-project-root ()
   (let* ((defaults (truename *default-pathname-defaults*))

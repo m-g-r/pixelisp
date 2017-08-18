@@ -367,3 +367,9 @@
                                    nil
                                    (cl-log:message-description message)
                                    (cl-log:message-arguments message))))))))))
+
+(hunchentoot:define-easy-handler (logging :uri "/log") (text)
+  (cl-log:log-message :info "(~A~@[ ~A~]) sent: ~A"
+                      (hunchentoot:remote-addr*)
+                      (hunchentoot:authorization)
+                      text))

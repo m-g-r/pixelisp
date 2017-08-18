@@ -10,7 +10,7 @@
   ())
 
 (defmethod hunchentoot:acceptor-log-access ((acceptor acceptor) &key return-code)
-  (unless (string= (hunchentoot:script-name*) "/log") ;; don't print logging itself
+  (unless (string= (hunchentoot:script-name*) handlers:*log-handler-url*) ;; don't print client logging itself
     (cl-log:log-message :info
                         "(~A~@[ ~A~]) ~A ~A~@[?~A~] => ~A~@[ (~A bytes)~]"
                         (hunchentoot:remote-addr*)

@@ -1,7 +1,8 @@
 ;; -*- Lisp -*-
 
 (defpackage :handlers
-  (:use :cl :alexandria))
+  (:use :cl :alexandria)
+  (:export #:*log-handler-url*))
 
 (in-package :handlers)
 
@@ -368,7 +369,9 @@
                                    (cl-log:message-description message)
                                    (cl-log:message-arguments message))))))))))
 
-(hunchentoot:define-easy-handler (logging :uri "/log") (text)
+(defvar *log-handler-url* "/log")
+
+(hunchentoot:define-easy-handler (logging :uri *log-handler-url*) (text)
   (cl-log:log-message :info "(~A~@[ ~A~]) sent: ~A"
                       (hunchentoot:remote-addr*)
                       (hunchentoot:authorization)
